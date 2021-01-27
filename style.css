@@ -28,7 +28,9 @@ p {
 textarea {
     margin: 20px 0;
     padding: 15px;
-    width: 850px;
+    max-width: 65ch;
+    text-align: center;
+    width: 65ch;
     font-size: 20px;
     background-color: rgb(54, 54, 54);
     border:1px solid rgb(2, 255, 23);
@@ -49,4 +51,8 @@ button {
     display: flex;   
     justify-content: space-between;
     align-items: center; 
+}
+
+.alert-visible {
+    display: none;
 }
