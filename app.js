@@ -1,11 +1,12 @@
 const baseString = '// =============================================================================';
 let maxLength = 80;
-let maxcommentLength = 67;
+let maxCommentLength = 67;
 
 const convertBtn = document.getElementById('convert-btn');
 const clearBtn = document.getElementById('clear-btn');
 const resultParagraph = document.getElementById('result');
 const textArea = document.getElementById('entry-field');
+const copyBtn = document.getElementById('copy-to-clipboard');
 
 // =============================================================================
 
@@ -27,10 +28,10 @@ const generateCommentArray = (commentLength, comment) => {
     if (comment) {
         for (let i = 0; i < commentPieces; i++) {
 
-            if (comment.length >= maxcommentLength) {
-                commentArr.push(comment.slice(0, maxcommentLength));
-                comment = comment.slice(maxcommentLength);
-            } else if (comment.length < maxcommentLength) {
+            if (comment.length >= maxCommentLength) {
+                commentArr.push(comment.slice(0, maxCommentLength));
+                comment = comment.slice(maxCommentLength);
+            } else if (comment.length < maxCommentLength) {
                 commentArr.push(comment);
             }
         }
@@ -51,19 +52,26 @@ const generateFinalCommentString = (commentArr) => {
 
     for (let commentLine of commentArr) {
 
-        if (commentLine.length === maxcommentLength) {
+        if (commentLine.length === maxCommentLength) {
 
             finalcommentArr.push('// ' + '====' + ' ' + commentLine + ' ' + '====');
+
         } else {
 
-            let repeat = Math.floor((maxLength - commentLine.length - 5) / 2);
-            leftSide = symbolRepeat.repeat(repeat);          
+            let repeat;
 
-            if (repeat % 2 == 0) {              
+            if (commentLine.length % 2 === 0) {
+                repeat = (maxLength - commentLine.length - 6) / 2;
+                rightSide = symbolRepeat.repeat(repeat + 1);
+
+            } else {
+                repeat = (maxLength - commentLine.length - 5) / 2;
                 rightSide = symbolRepeat.repeat(repeat);
-            } else {              
-                rightSide = symbolRepeat.repeat(repeat +1);
             }
+            console.log(commentLine.length);
+            console.log(commentLine);
+
+            leftSide = symbolRepeat.repeat(repeat);
 
             finalcommentArr.push('// ' + leftSide + ' ' + commentLine + ' ' + rightSide);
         }
@@ -91,7 +99,7 @@ const generateNewCommentString = (commentArr) => {
 const generateComment = (comment) => {
     const commentLength = mesureCommentLength(comment);
     const commentArray = generateCommentArray(commentLength, comment);
-    const finalcommentArray = generateFinalCommentString(commentArray);    
+    const finalcommentArray = generateFinalCommentString(commentArray);
     return generateNewCommentString(finalcommentArray);
 }
 
@@ -104,12 +112,18 @@ convertBtn.addEventListener('click', function (event) {
     event.preventDefault();
     const comment = textArea.value;
     const result = generateComment(comment);
-    console.log(typeof result);
     resultParagraph.innerHTML = result;
 });
 
-convertBtn.addEventListener('click', function (event) {
+clearBtn.addEventListener('click', function (event) {
     event.preventDefault();
     textArea.value = '';
     resultParagraph.value = '';
 });
+
+copyBtn.addEventListener('click', function (event) {
+    event.preventDefault();
+    const value = resultParagraph.value;
+
+});
+
